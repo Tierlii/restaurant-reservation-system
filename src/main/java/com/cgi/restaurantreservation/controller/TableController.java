@@ -14,6 +14,8 @@ import com.cgi.restaurantreservation.dto.SearchResponse;
 import com.cgi.restaurantreservation.model.RestaurantTable;
 import com.cgi.restaurantreservation.service.TableService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -31,7 +33,7 @@ public class TableController {
     }
 
     @PostMapping("/search")
-    public SearchResponse searchTables(@RequestBody SearchRequest request) {
+    public SearchResponse searchTables(@Valid @RequestBody SearchRequest request) {
         return tableService.searchTables(request);
     }
 }

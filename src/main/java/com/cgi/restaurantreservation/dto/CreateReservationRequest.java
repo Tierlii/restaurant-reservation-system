@@ -3,11 +3,22 @@ package com.cgi.restaurantreservation.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 public class CreateReservationRequest {
 
+    @NotNull(message = "Table id is required")
     private Long tableId;
+
+    @NotNull(message = "Reservation date is required")
     private LocalDate date;
+
+    @NotNull(message = "Reservation time is required")
     private LocalTime time;
+
+    @Min(value = 1, message = "Party size must be at least 1")
+    
     private int partySize;
 
     public CreateReservationRequest() {

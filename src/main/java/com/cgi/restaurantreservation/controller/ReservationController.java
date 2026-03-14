@@ -10,6 +10,8 @@ import com.cgi.restaurantreservation.dto.CreateReservationRequest;
 import com.cgi.restaurantreservation.dto.ReservationResponse;
 import com.cgi.restaurantreservation.service.ReservationService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/reservations")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -22,7 +24,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ReservationResponse createReservation(@RequestBody CreateReservationRequest request) {
+    public ReservationResponse createReservation(@Valid @RequestBody CreateReservationRequest request) {
         return reservationService.createReservation(request);
     }
 }
