@@ -7,31 +7,36 @@ interface TableCardProps {
 }
 
 function TableCard({ table, selectedTableId, onSelect }: TableCardProps) {
-  const isSelected = selectedTableId === table.id;
 
-  let statusClass = "table-card occupied";
-  if (table.recommended) {
-    statusClass = "table-card recommended";
-  } else if (table.available) {
-    statusClass = "table-card available";
-  }
+  const statusClass = table.recommended
+    ? "table-recommended"
+    : table.available
+    ? "table-available"
+    : "table-occupied";
 
-  if (isSelected) {
-    statusClass += " selected";
-  }
+  const selectedClass =
+    selectedTableId === table.id ? "table-selected" : "";
+
+  const handleClick = () => {
+    if (!table.available && !table.recommended) {
+      return;
+    }
+
+    onSelect?.(table);
+  };
 
   return (
-    <button
-      type="button"
-      className={statusClass}
-      style={{ left: `${table.x}px`, top: `${table.y}px` }}
-      onClick={() => onSelect?.(table)}
-      disabled={!table.available && !table.recommended}
-      title={`${table.name} • Capacity: ${table.capacity} • Zone: ${table.zone}`}
+    <div
+      className={`table-card ${statusClass} ${selectedClass}`}
+      style={{
+        left: table.x,
+        top: table.y,
+      }}
+      onClick={handleClick}
+      title={`${table.name} • capacity ${table.capacity}`}
     >
-      <span className="table-name">{table.name}</span>
-      <span className="table-capacity">{table.capacity} seats</span>
-    </button>
+      {table.name}
+    </div>
   );
 }
 

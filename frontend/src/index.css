@@ -1,3 +1,115 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background: #f8fafc;
+  color: #111827;
+}
+
+.app-container {
+  padding: 32px;
+}
+
+.app-header {
+  margin-bottom: 28px;
+}
+
+.app-header h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+}
+
+.app-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-panel,
+.info-panel,
+.filter-panel {
+  background: white;
+  border-radius: 16px;
+  padding: 18px 20px;
+  border: 1px solid #e5e7eb;
+}
+
+.panel-title {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.layout-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.placeholder-text {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.filter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter-form input,
+.filter-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.filter-form button {
+  margin-top: 6px;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  background: #111827;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter-form button:hover {
+  background: #1f2937;
+}
+
+.filter-form button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.selected-table-card p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
 .reserve-button {
   margin-top: 12px;
   width: 100%;
@@ -26,6 +138,7 @@
   padding: 12px 14px;
   border-radius: 12px;
   font-weight: 500;
+  font-size: 14px;
 }
 
 .success-message {
@@ -38,4 +151,117 @@
   background: #fee2e2;
   color: #991b1b;
   border: 1px solid #fca5a5;
+}
+
+.restaurant-map {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.zone-label {
+  position: absolute;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.zone-main {
+  top: 16px;
+  left: 20px;
+}
+
+.zone-terrace {
+  top: 16px;
+  right: 20px;
+}
+
+.zone-private {
+  bottom: 16px;
+  left: 20px;
+}
+
+.table-card {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 600;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  border: 2px solid transparent;
+}
+
+.table-available {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.table-available:hover {
+  transform: scale(1.08);
+}
+
+.table-occupied {
+  background: #e5e7eb;
+  color: #374151;
+  cursor: not-allowed;
+}
+
+.table-recommended {
+  background: #2563eb;
+  color: white;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.table-recommended:hover {
+  transform: scale(1.1);
+}
+
+.table-selected {
+  border: 3px solid #111827;
+}
+
+.legend {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.available-dot {
+  background: #22c55e;
+}
+
+.occupied-dot {
+  background: #9ca3af;
+}
+
+.recommended-dot {
+  background: #2563eb;
 }
