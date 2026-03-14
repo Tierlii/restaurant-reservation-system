@@ -23,7 +23,7 @@ select {
 }
 
 .app-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 32px 20px;
 }
@@ -44,15 +44,23 @@ select {
   font-size: 16px;
 }
 
-.app-content {
+.app-grid {
   display: grid;
   grid-template-columns: 360px 1fr;
   gap: 24px;
   align-items: start;
 }
 
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .filter-panel,
-.placeholder-panel {
+.info-panel,
+.layout-panel {
   background: #ffffff;
   border-radius: 16px;
   padding: 24px;
@@ -156,8 +164,173 @@ select {
   font-size: 14px;
 }
 
-@media (max-width: 900px) {
-  .app-content {
+.layout-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.layout-subtitle {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.available-dot {
+  background: #22c55e;
+}
+
+.occupied-dot {
+  background: #ef4444;
+}
+
+.recommended-dot {
+  background: #f59e0b;
+}
+
+.restaurant-map {
+  position: relative;
+  width: 100%;
+  min-height: 560px;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    linear-gradient(to right, rgba(255,255,255,0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.35) 1px, transparent 1px),
+    linear-gradient(135deg, #dbeafe, #f8fafc 45%, #dcfce7);
+  background-size: 40px 40px, 40px 40px, cover;
+  border: 1px solid #dbe3f0;
+}
+
+.zone-label {
+  position: absolute;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #475569;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 6px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
+.zone-main {
+  top: 16px;
+  left: 16px;
+}
+
+.zone-terrace {
+  top: 186px;
+  left: 16px;
+}
+
+.zone-private {
+  top: 186px;
+  right: 16px;
+}
+
+.table-card {
+  position: absolute;
+  width: 94px;
+  min-height: 66px;
+  border: none;
+  border-radius: 16px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: white;
+}
+
+.table-card:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.22);
+  cursor: pointer;
+}
+
+.table-card.available {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.table-card.occupied {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  opacity: 0.85;
+  cursor: not-allowed;
+}
+
+.table-card.recommended {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.table-card.selected {
+  outline: 4px solid #111827;
+  outline-offset: 2px;
+}
+
+.table-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.table-capacity {
+  font-size: 11px;
+  opacity: 0.92;
+}
+
+.selected-table-card p {
+  margin: 0 0 10px;
+  color: #374151;
+}
+
+.selected-table-card p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 1100px) {
+  .app-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .layout-header {
+    flex-direction: column;
+  }
+
+  .legend {
+    justify-content: flex-start;
+  }
+
+  .restaurant-map {
+    min-height: 700px;
   }
 }
