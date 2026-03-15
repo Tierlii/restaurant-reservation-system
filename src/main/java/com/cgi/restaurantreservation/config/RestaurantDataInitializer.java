@@ -12,6 +12,7 @@ import com.cgi.restaurantreservation.model.Reservation;
 import com.cgi.restaurantreservation.model.RestaurantTable;
 import com.cgi.restaurantreservation.model.Zone;
 import com.cgi.restaurantreservation.repository.InMemoryDataStore;
+import com.cgi.restaurantreservation.service.ReservationRules;
 
 import jakarta.annotation.PostConstruct;
 
@@ -86,7 +87,7 @@ public class RestaurantDataInitializer {
                 RestaurantTable table = tables.get(random.nextInt(tables.size()));
 
                 LocalDateTime start = LocalDateTime.of(date, slot);
-                LocalDateTime end = start.plusHours(2);
+                LocalDateTime end = start.plusHours(ReservationRules.DEFAULT_RESERVATION_DURATION_HOURS);
 
                 boolean alreadyReserved = dataStore.getReservations().stream()
                         .anyMatch(existing ->

@@ -1,5 +1,6 @@
 package com.cgi.restaurantreservation.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,8 +14,6 @@ import com.cgi.restaurantreservation.repository.InMemoryDataStore;
 
 @Service
 public class ReservationService {
-
-    private static final int DEFAULT_RESERVATION_DURATION_HOURS = 2;
 
     private final InMemoryDataStore dataStore;
 
@@ -30,9 +29,12 @@ public class ReservationService {
                 continue;
             }
 
-            if (overlaps(requestedStart, requestedEnd,
+            if (overlaps(
+                    requestedStart,
+                    requestedEnd,
                     reservation.getReservationStart(),
-                    reservation.getReservationEnd())) {
+                    reservation.getReservationEnd()
+            )) {
                 return false;
             }
         }
@@ -57,7 +59,9 @@ public class ReservationService {
         }
 
         LocalDateTime reservationStart = LocalDateTime.of(request.getDate(), request.getTime());
-        LocalDateTime reservationEnd = reservationStart.plusHours(DEFAULT_RESERVATION_DURATION_HOURS);
+        LocalDateTime reservationEnd = reservationStart.plusHours(
+                ReservationRules.DEFAULT_RESERVATION_DURATION_HOURS
+        );
 
         if (!isTableAvailable(table.getId(), reservationStart, reservationEnd)) {
             throw new IllegalArgumentException("Selected table is not available for the chosen time.");
@@ -108,6 +112,10 @@ public class ReservationService {
 
         if (request.getPartySize() <= 0) {
             throw new IllegalArgumentException("Party size must be greater than zero.");
+        }
+
+        if (request.getDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Reservation date cannot be in the past.");
         }
     }
 }

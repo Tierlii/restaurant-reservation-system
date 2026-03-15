@@ -19,8 +19,6 @@ import com.cgi.restaurantreservation.repository.InMemoryDataStore;
 @Service
 public class TableService {
 
-    private static final int DEFAULT_RESERVATION_DURATION_HOURS = 2;
-
     private final InMemoryDataStore dataStore;
     private final ReservationService reservationService;
     private final RecommendationService recommendationService;
@@ -41,8 +39,9 @@ public class TableService {
         validateSearchRequest(request);
 
         LocalDateTime requestedStart = LocalDateTime.of(request.getDate(), request.getTime());
-        LocalDateTime requestedEnd = requestedStart.plusHours(DEFAULT_RESERVATION_DURATION_HOURS);
-
+        LocalDateTime requestedEnd = requestedStart.plusHours(
+                ReservationRules.DEFAULT_RESERVATION_DURATION_HOURS
+    );
         List<Preference> preferences = request.getPreferences() != null
                 ? request.getPreferences()
                 : Collections.emptyList();
@@ -129,6 +128,10 @@ public class TableService {
 
         if (request.getPartySize() <= 0) {
             throw new IllegalArgumentException("Party size must be greater than zero.");
+        }
+
+        if (request.getDate().isBefore(java.time.LocalDate.now())) {
+            throw new IllegalArgumentException("Search date cannot be in the past.");
         }
     }
 }
