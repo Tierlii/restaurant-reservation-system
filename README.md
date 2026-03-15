@@ -166,10 +166,13 @@ Despite the initial learning curve, React made it possible to build an interacti
 
 # Use of AI
 
-AI tools (ChatGPT) were used during development primarily to assist with the **frontend implementation using React**.
+AI tools (ChatGPT) were used extensively during development of the **frontend part of the application**.
 
-Since this was my first experience working with React, AI was used to:
-- understand React component structure
-- generate UI component
-- assist with state management and API integration
-- help structure the table layout visualization
+The frontend interface was primarily generated with the help of AI due to my limited prior experience with React. AI assistance was used to design and implement:
+
+- the React component structure
+- the table layout visualization
+- the filtering panel and user interface
+- communication with the backend API
+
+All generated code was reviewed, tested, and integrated into the project manually to ensure it works correctly with the backend and meets the requirements of the assignment.
