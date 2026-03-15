@@ -1,6 +1,9 @@
 package com.cgi.restaurantreservation.config;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.stereotype.Component;
@@ -16,6 +19,7 @@ import jakarta.annotation.PostConstruct;
 public class RestaurantDataInitializer {
 
     private final InMemoryDataStore dataStore;
+    private final Random random = new Random();
 
     public RestaurantDataInitializer(InMemoryDataStore dataStore) {
         this.dataStore = dataStore;
@@ -23,6 +27,12 @@ public class RestaurantDataInitializer {
 
     @PostConstruct
     public void init() {
+        initializeTables();
+        initializeReservations();
+    }
+
+    private void initializeTables() {
+        dataStore.getTables().clear();
 
         dataStore.getTables().add(new RestaurantTable(1L, "T1", 2, Zone.MAIN_HALL, 100, 100, true, true, false, true));
         dataStore.getTables().add(new RestaurantTable(2L, "T2", 2, Zone.MAIN_HALL, 200, 100, false, true, false, true));
@@ -39,28 +49,77 @@ public class RestaurantDataInitializer {
         dataStore.getTables().add(new RestaurantTable(10L, "T10", 2, Zone.MAIN_HALL, 150, 400, true, true, true, true));
         dataStore.getTables().add(new RestaurantTable(11L, "T11", 4, Zone.MAIN_HALL, 300, 400, false, false, true, true));
         dataStore.getTables().add(new RestaurantTable(12L, "T12", 6, Zone.MAIN_HALL, 450, 400, false, false, true, true));
+    }
 
+    private void initializeReservations() {
+        dataStore.getReservations().clear();
 
-        Random random = new Random();
+        List<RestaurantTable> tables = dataStore.getTables();
 
-        for (int i = 0; i < 8; i++) {
+        List<LocalTime> slots = List.of(
+                LocalTime.of(12, 0),
+                LocalTime.of(14, 0),
+                LocalTime.of(16, 0),
+                LocalTime.of(18, 0),
+                LocalTime.of(20, 0),
+                LocalTime.of(22, 0)
+        );
 
-            Long tableId = (long) (random.nextInt(12) + 1);
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now().plusDays(14);
 
-            LocalDateTime start = LocalDateTime.now()
-                    .plusHours(random.nextInt(6));
-
-            LocalDateTime end = start.plusHours(2);
-
-            Reservation reservation = new Reservation(
-                    dataStore.nextReservationId(),
-                    tableId,
-                    start,
-                    end,
-                    random.nextInt(4) + 2
-            );
-
-            dataStore.getReservations().add(reservation);
+        LocalDate current = startDate;
+        while (!current.isAfter(endDate)) {
+            generateReservationsForDay(current, slots, tables);
+            current = current.plusDays(1);
         }
+    }
+
+    private void generateReservationsForDay(LocalDate date,
+                                            List<LocalTime> slots,
+                                            List<RestaurantTable> tables) {
+
+        for (LocalTime slot : slots) {
+            int numberOfReservationsForSlot = 3 + random.nextInt(4);
+
+            for (int i = 0; i < numberOfReservationsForSlot; i++) {
+                RestaurantTable table = tables.get(random.nextInt(tables.size()));
+
+                LocalDateTime start = LocalDateTime.of(date, slot);
+                LocalDateTime end = start.plusHours(2);
+
+                boolean alreadyReserved = dataStore.getReservations().stream()
+                        .anyMatch(existing ->
+                                existing.getTableId().equals(table.getId())
+                                        && overlaps(start, end,
+                                        existing.getReservationStart(),
+                                        existing.getReservationEnd())
+                        );
+
+                if (alreadyReserved) {
+                    continue;
+                }
+
+                int maxPartySize = Math.max(1, table.getCapacity());
+                int partySize = 1 + random.nextInt(maxPartySize);
+
+                Reservation reservation = new Reservation(
+                        dataStore.nextReservationId(),
+                        table.getId(),
+                        start,
+                        end,
+                        partySize
+                );
+
+                dataStore.getReservations().add(reservation);
+            }
+        }
+    }
+
+    private boolean overlaps(LocalDateTime requestedStart,
+                             LocalDateTime requestedEnd,
+                             LocalDateTime existingStart,
+                             LocalDateTime existingEnd) {
+        return requestedStart.isBefore(existingEnd) && requestedEnd.isAfter(existingStart);
     }
 }

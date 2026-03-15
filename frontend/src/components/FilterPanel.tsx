@@ -60,12 +60,13 @@ function FilterPanel({ onSearch, isLoading = false }: FilterPanelProps) {
         <div className="form-group">
           <label htmlFor="date">Date</label>
           <input
-            id="date"
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
+          id="date"
+          type="date"
+          value={date}
+          min={getTodayDate()}
+          onChange={(e) => setDate(e.target.value)}
+          required
+        />
         </div>
 
         <div className="form-group">
