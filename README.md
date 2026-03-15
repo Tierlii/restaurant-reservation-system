@@ -108,9 +108,14 @@ Tables are scored based on:
 
 The system recommends the highest scoring table.
 
-# Time Spent 
+# Time Spent
 
-Development time: 68 hours
+The project was developed over a period of approximately **two weeks**.
+
+- **Project architecture and design:** ~20 hours  
+- **Implementation and development:** ~24 hours  
+
+In total, about **44 hours** were spent on designing, implementing, testing, and preparing the project.
 
 # Challenges
 
