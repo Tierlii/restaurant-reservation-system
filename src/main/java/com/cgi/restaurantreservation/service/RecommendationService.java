@@ -13,21 +13,42 @@ import com.cgi.restaurantreservation.model.RestaurantTable;
 public class RecommendationService {
 
     private static final double BASE_SCORE = 100.0;
-    private static final double CAPACITY_PENALTY_PER_EXTRA_SEAT = 10.0;
-    private static final double PREFERENCE_BONUS = 15.0;
+    private static final double EXACT_MATCH_BONUS = 35.0;
+    private static final double EXTRA_SEAT_PENALTY = 12.0;
+
+    private static final double WINDOW_BONUS = 18.0;
+    private static final double QUIET_BONUS = 20.0;
+    private static final double KIDS_AREA_BONUS = 18.0;
+    private static final double ACCESSIBLE_BONUS = 22.0;
+
+    private static final double QUIET_NEAR_KIDS_PENALTY = 12.0;
 
     public double calculateScore(RestaurantTable table, int partySize, List<Preference> preferences) {
-        double score = BASE_SCORE - ((table.getCapacity() - partySize) * CAPACITY_PENALTY_PER_EXTRA_SEAT);
+        double score = BASE_SCORE;
+
+        int extraSeats = table.getCapacity() - partySize;
+
+        if (extraSeats == 0) {
+            score += EXACT_MATCH_BONUS;
+        } else {
+            score -= extraSeats * EXTRA_SEAT_PENALTY;
+        }
 
         if (preferences == null || preferences.isEmpty()) {
-            return score;
+            return round(score);
         }
+
+        boolean wantsQuiet = preferences.contains(Preference.QUIET);
 
         for (Preference preference : preferences) {
             score += getPreferenceBonus(table, preference);
         }
 
-        return score;
+        if (wantsQuiet && table.isNearKidsArea()) {
+            score -= QUIET_NEAR_KIDS_PENALTY;
+        }
+
+        return round(score);
     }
 
     public Optional<RestaurantTable> findBestTable(List<RestaurantTable> availableTables,
@@ -44,10 +65,14 @@ public class RecommendationService {
 
     private double getPreferenceBonus(RestaurantTable table, Preference preference) {
         return switch (preference) {
-            case QUIET -> table.isQuiet() ? PREFERENCE_BONUS : 0.0;
-            case WINDOW -> table.isWindowSeat() ? PREFERENCE_BONUS : 0.0;
-            case NEAR_KIDS_AREA -> table.isNearKidsArea() ? PREFERENCE_BONUS : 0.0;
-            case ACCESSIBLE -> table.isAccessible() ? PREFERENCE_BONUS : 0.0;
+            case WINDOW -> table.isWindowSeat() ? WINDOW_BONUS : 0.0;
+            case QUIET -> table.isQuiet() ? QUIET_BONUS : 0.0;
+            case NEAR_KIDS_AREA -> table.isNearKidsArea() ? KIDS_AREA_BONUS : 0.0;
+            case ACCESSIBLE -> table.isAccessible() ? ACCESSIBLE_BONUS : 0.0;
         };
+    }
+
+    private double round(double value) {
+        return Math.round(value * 10.0) / 10.0;
     }
 }

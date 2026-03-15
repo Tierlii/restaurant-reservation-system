@@ -108,4 +108,31 @@ class RecommendationServiceTest {
         assertTrue(bestTable.isPresent());
         assertEquals(1L, bestTable.get().getId());
     }
+
+    @Test
+    void shouldPenalizeKidsAreaWhenQuietIsRequested() {
+        RestaurantTable quietButNearKids = new RestaurantTable(
+                1L, "T1", 4, Zone.MAIN_HALL, 100, 100,
+                false, true, true, true
+        );
+
+        RestaurantTable quietWithoutKids = new RestaurantTable(
+                2L, "T2", 4, Zone.MAIN_HALL, 200, 100,
+                false, true, false, true
+        );
+
+        double score1 = recommendationService.calculateScore(
+                quietButNearKids,
+                4,
+                List.of(Preference.QUIET)
+        );
+
+        double score2 = recommendationService.calculateScore(
+                quietWithoutKids,
+                4,
+                List.of(Preference.QUIET)
+        );
+
+        assertTrue(score2 > score1);
+    }
 }
