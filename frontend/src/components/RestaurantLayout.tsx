@@ -53,10 +53,13 @@ function RestaurantLayout({
       </div>
 
       <div className="restaurant-map">
-        <div className="zone-label zone-main">Main Hall</div>
-        <div className="zone-label zone-terrace">Terrace</div>
-        <div className="zone-label zone-private">Private Room</div>
+          <div className="zone-label zone-main-top-left">Main Hall</div>
+          <div className="zone-label zone-main-top-right">Main Hall</div>
 
+          <div className="zone-label zone-terrace">Terrace</div>
+          <div className="zone-label zone-private">Private Room</div>
+
+          <div className="zone-label zone-main-bottom">Main Hall</div>
         {tables.map((table) => (
           <TableCard
             key={table.id}

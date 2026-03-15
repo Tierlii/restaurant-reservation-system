@@ -168,21 +168,34 @@ body {
   font-size: 12px;
   font-weight: 600;
   color: #64748b;
+  pointer-events: none;
 }
 
-.zone-main {
-  top: 16px;
-  left: 20px;
+.zone-main-top-left {
+  top: 60px;
+  left: 140px;
+}
+
+.zone-main-top-right {
+  top: 60px;
+  right: 1700px;
 }
 
 .zone-terrace {
-  top: 16px;
-  right: 20px;
+  top: 55%;
+  left: 37px;
+  transform: translateY(-50%);
 }
 
 .zone-private {
+  top: 55%;
+  right: 1350px;
+  transform: translateY(-50%);
+}
+
+.zone-main-bottom {
   bottom: 16px;
-  left: 20px;
+  left: 140px;
 }
 
 .table-card {
