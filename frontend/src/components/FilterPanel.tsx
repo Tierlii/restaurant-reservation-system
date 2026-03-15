@@ -60,13 +60,13 @@ function FilterPanel({ onSearch, isLoading = false }: FilterPanelProps) {
         <div className="form-group">
           <label htmlFor="date">Date</label>
           <input
-          id="date"
-          type="date"
-          value={date}
-          min={getTodayDate()}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
+            id="date"
+            type="date"
+            value={date}
+            min={getTodayDate()}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
         </div>
 
         <div className="form-group">
@@ -112,9 +112,9 @@ function FilterPanel({ onSearch, isLoading = false }: FilterPanelProps) {
         <div className="form-group">
           <span className="preferences-label">Preferences</span>
 
-          <div className="preferences-grid">
+          <div className="preferences">
             {preferenceOptions.map((option) => (
-              <label key={option.value} className="checkbox-item">
+              <label key={option.value} className="checkbox-row">
                 <input
                   type="checkbox"
                   checked={preferences.includes(option.value)}
